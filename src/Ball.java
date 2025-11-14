@@ -61,7 +61,47 @@ public class Ball {
     }
 
     // Move one step
+    public void moveOneStep(int width, int height) {
+        this.center = this.velocity.applyToPoint(this.center);
+
+        double x = this.center.getX();
+        double y = this.center.getY();
+        double dx = this.velocity.getDx();
+        double dy = this.velocity.getDy();
+
+        if (x - this.radius <= 0 || x + this.radius >= width) {
+            this.velocity = new Velocity(-dx, dy);
+        }
+
+        if (y - this.radius <= 0 || y + this.radius >= height) {
+            this.velocity = new Velocity(dx, -dy);
+        }
+    }
     public void moveOneStep() {
         this.center = this.velocity.applyToPoint(this.center);
+    }
+    public void moveOneStepInFrame(int minX, int minY, int maxX, int maxY) {
+        // תזוזה
+        this.center = this.velocity.applyToPoint(this.center);
+
+        double x = this.center.getX();
+        double y = this.center.getY();
+        double dx = this.velocity.getDx();
+        double dy = this.velocity.getDy();
+
+        // בדיקת התנגשות עם קיר שמאלי או ימני של המסגרת
+        if (x - this.radius <= minX || x + this.radius >= maxX) {
+            this.velocity = new Velocity(-dx, dy);
+        }
+
+        // בדיקת התנגשות עם קיר עליון או תחתון של המסגרת
+        if (y - this.radius <= minY || y + this.radius >= maxY) {
+            this.velocity = new Velocity(dx, -dy);
+        }
+
+        // וודא שהכדור בתוך גבולות המסגרת
+        x = Math.max(minX + this.radius, Math.min(maxX - this.radius, x));
+        y = Math.max(minY + this.radius, Math.min(maxY - this.radius, y));
+        this.center = new Point(x, y);
     }
 }
