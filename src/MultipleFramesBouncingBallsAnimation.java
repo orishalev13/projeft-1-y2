@@ -32,14 +32,14 @@ public class MultipleFramesBouncingBallsAnimation {
         for (int i = 0; i < numBalls; i++) {
             int size = Integer.parseInt(args[i]);
             int minX, minY, maxX, maxY; String frameName;
-            if (i < half) {  // חצי ראשון - מסגרת 1 (אפורה)
+            if (i < half) {  //
                 minX = frame1MinX;
                 minY = frame1MinY;
                 maxX = frame1MaxX;
                 maxY = frame1MaxY;
                 frameName = "gray";
             } else {
-                // חצי שני - מסגרת 2 (צהובה)
+                //
                 minX = frame2MinX;
                 minY = frame2MinY;
                 maxX = frame2MaxX;
@@ -47,11 +47,11 @@ public class MultipleFramesBouncingBallsAnimation {
                frameName = "yellow";
             }
 
-            // מיקום אקראי בתוך המסגרת
+            //
             int frameWidth = maxX - minX;
             int frameHeight = maxY - minY;
 
-            // וודא שהכדור לא גדול מדי למסגרת
+            //
             if (size * 2 >= frameWidth || size * 2 >= frameHeight) {
                 System.out.println("Ball " + (i+1) + " (size " + size + ") is too big for " +
                         frameName + " frame! Reducing to size 10.");
@@ -61,12 +61,12 @@ public class MultipleFramesBouncingBallsAnimation {
             int x = random.nextInt(frameWidth - size * 2) + minX + size;
             int y = random.nextInt(frameHeight - size * 2) + minY + size;
 
-            // צבע אקראי
+            //
             Color color = new Color(random.nextInt(256),
                     random.nextInt(256),
                     random.nextInt(256));
 
-            // יצירת הכדור
+            //
             balls[i] = new Ball(x, y, size, color);
 
             // מהירות לפי גודל
@@ -95,49 +95,47 @@ public class MultipleFramesBouncingBallsAnimation {
         Sleeper sleeper = new Sleeper();
         System.out.println("\nStarting animation...");
 
-        // לולאת אנימציה
+        //
         while (true) {
             DrawSurface d = gui.getDrawSurface();
-
-            // 1. רקע לבן
             d.setColor(Color.WHITE);
             d.fillRectangle(0, 0, windowWidth, windowHeight);
 
-            // 2. צייר מסגרת 1 (אפורה)
+
             d.setColor(frame1Color);
             d.fillRectangle(frame1MinX, frame1MinY,
                     frame1MaxX - frame1MinX,
                     frame1MaxY - frame1MinY);
 
-            // 3. צייר מסגרת 2 (צהובה)
+
             d.setColor(frame2Color);
             d.fillRectangle(frame2MinX, frame2MinY,
                     frame2MaxX - frame2MinX,
                     frame2MaxY - frame2MinY);
 
-            // 4. זוז וצייר את כל הכדורים
+
             for (int i = 0; i < balls.length; i++) {
-                // קבע את גבולות המסגרת של הכדור
+
                 int minX, minY, maxX, maxY;
 
                 if (i < half) {
-                    // מסגרת 1
+
                     minX = frame1MinX;
                     minY = frame1MinY;
                     maxX = frame1MaxX;
                     maxY = frame1MaxY;
                 } else {
-                    // מסגרת 2
+
                     minX = frame2MinX;
                     minY = frame2MinY;
                     maxX = frame2MaxX;
                     maxY = frame2MaxY;
                 }
 
-                // זוז את הכדור עם גבולות המסגרת שלו
+
                 balls[i].moveOneStepInFrame(minX, minY, maxX, maxY);
 
-                // צייר את הכדור
+
                 balls[i].drawOn(d);
             }
 

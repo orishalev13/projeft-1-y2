@@ -1,4 +1,7 @@
-public class Line {private Point start;
+import java.util.List;
+import java.util.ArrayList;
+public class Line {
+    private Point start;
     private Point end;
 
     // Constructors
@@ -59,7 +62,6 @@ public class Line {private Point start;
             return null;
 
         }
-
         // Calculate intersection point using parametric equations
         double t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denominator;
         double u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / denominator;
@@ -74,9 +76,34 @@ public class Line {private Point start;
         return null;
     }
 
-    // equals -- return true if the lines are equal, false otherwise
-    public boolean equals(Line other) {
-        return (this.start.equals(other.start) && this.end.equals(other.end))
-                || (this.start.equals(other.end) && this.end.equals(other.start));
+    public Point closestIntersectionToStartOfLine(Rectangle rect){
+        List<Point> intersectionPoints = rect.intersectionPoints(this);
+
+        if (intersectionPoints.isEmpty()) {
+            return null;
+        }
+
+        // 3. Find the closest intersection point
+        Point closestPoint = intersectionPoints.get(0);
+        double minDistance = this.start.distance(closestPoint); // Initialize with the largest possible value
+
+        // Iterate through all found intersection points
+        for (Point p : intersectionPoints) {
+            // Calculate the distance from the line's start point to the intersection point 'p'
+            double currentDistance = this.start.distance(p);
+            // Check if this point is closer than the current closest point
+            if (currentDistance < minDistance) {
+                minDistance = currentDistance;
+                closestPoint = p;
+            }
+        }
+        // 4. Return the closest point
+        return closestPoint;
     }
+
+// equals -- return true if the lines are equal, false otherwise
+public boolean equals(Line other) {
+    return (this.start.equals(other.start) && this.end.equals(other.end))
+            || (this.start.equals(other.end) && this.end.equals(other.start));
+}
 }
